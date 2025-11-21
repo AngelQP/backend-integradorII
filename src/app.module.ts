@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { TestAuthModule } from './test-auth/test-auth.module';
+import { LibroModule } from './libro/book.module';
 
 @Module({
   imports: [
@@ -17,11 +19,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: false,
+      // logging: true, // opcional para ver más detalle
     }),
 
+    AuthModule,
+
+    CommonModule,
+
+    TestAuthModule,
+
+    LibroModule,
 
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  
 })
 export class AppModule {}
