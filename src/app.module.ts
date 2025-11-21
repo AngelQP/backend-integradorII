@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { TestAuthModule } from './test-auth/test-auth.module';
-import { LibroModule } from './libro/book.module';
+import { BookModule } from './libro/book.module';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { LibroModule } from './libro/book.module';
 
     TestAuthModule,
 
-    LibroModule,
+    BookModule,
 
   ],
   

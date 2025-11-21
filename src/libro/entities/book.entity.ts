@@ -1,7 +1,7 @@
-import { User } from "src/auth/entities/user.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { BookImage } from "./bookImage.entity";
 import { BookCategory } from './bookCategory.entity';
+import { User } from '../../auth/entities/user.entity';
 
 
 export enum BookCondition {

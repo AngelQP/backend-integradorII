@@ -12,4 +12,4 @@ import { Favorite } from './entities/favorite.entity';
     TypeOrmModule.forFeature([Book, BookCategory, Category, BookImage, Favorite])
   ]
 })
-export class LibroModule {}
+export class BookModule {}
