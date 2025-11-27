@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { Book } from './book.entity';
-import { Category } from './category.entity';
+import { Category } from 'src/category/entities/category.entity';
 
 @Entity({ name: 'book_categorys' })
 export class BookCategory {
