@@ -5,6 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { TestAuthModule } from './test-auth/test-auth.module';
 import { BookModule } from './libro/book.module';
+import { CategoryModule } from './category/category.module';
+import { FavoriteModule } from './favorite/favorite.module';
 
 @Module({
   imports: [
@@ -30,6 +32,10 @@ import { BookModule } from './libro/book.module';
     TestAuthModule,
 
     BookModule,
+
+    CategoryModule,
+
+    FavoriteModule,
 
   ],
   
