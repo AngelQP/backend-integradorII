@@ -7,12 +7,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 
 @Entity({ name: 'categorys' })
 export class Category {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column('text', {
     unique: true
@@ -49,4 +51,19 @@ export class Category {
     nullable: true,
   })
   deletedAt?: Date | null;
+
+
+  @BeforeInsert()
+    checkSlugInsert(){
+        this.name = this.name
+            .trim()
+            .toLocaleUpperCase()
+    }
+
+    @BeforeUpdate()
+    checkSlugUpdate(){
+        this.name = this.name
+            .trim()
+            .toLocaleUpperCase()
+    }
 }
