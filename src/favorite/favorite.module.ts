@@ -13,6 +13,7 @@ import { CategoryModule } from 'src/category/category.module';
   imports: [
     TypeOrmModule.forFeature([Favorite]),
     AuthModule,
-  ]
+  ],
+  exports: [FavoriteService]
 })
 export class FavoriteModule {}
