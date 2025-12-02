@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TestAuthService } from './test-auth.service';
 import { Auth } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('test-auth')
 export class TestAuthController {
@@ -9,7 +10,8 @@ export class TestAuthController {
 
 
   @Get()
-  @Auth(ValidRoles.superAdmin)
+  @Auth(ValidRoles.superAdmin, ValidRoles.user_seller)
+  @ApiBearerAuth('bearer')
   findAll() {
     return this.testAuthService.findAll();
   }

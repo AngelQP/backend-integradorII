@@ -2,9 +2,13 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Coloca el prefijo de "api" antes de las rutas
+  app.setGlobalPrefix('api');
 
   // Configuracion de swagger
   const config = new DocumentBuilder()
@@ -24,9 +28,16 @@ async function bootstrap() {
     )
     .build();
   
-  const document = SwaggerModule.createDocument(app, config);
-  // Monta la interfaz de Swagger UI en la ruta '/api'
-  SwaggerModule.setup('api', app, document);
+  // IMPORTANT: include global prefix in the generated paths
+  const document = SwaggerModule.createDocument(app, config, {
+    ignoreGlobalPrefix: false,
+  });
+  // Monta la interfaz de Swagger UI en la ruta '/api' => http://localhost:3000/api
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
   // --------------------------------- //
 
   // para aplicar DTO de salida en las request
@@ -39,10 +50,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     })
   );
-
-  // Coloca el prefijo de "api" antes de las rutas
-  app.setGlobalPrefix('api');
-
 
   await app.listen(process.env.PORT ?? 3000);
 }

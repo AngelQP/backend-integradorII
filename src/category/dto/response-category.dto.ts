@@ -1,5 +1,4 @@
-import { Exclude, Expose } from "class-transformer";
-import { BookCategory } from "src/libro/entities";
+import { Expose } from "class-transformer";
 
 export class CategoryResponse {
 

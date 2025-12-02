@@ -4,9 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { TestAuthModule } from './test-auth/test-auth.module';
-import { BookModule } from './libro/book.module';
 import { CategoryModule } from './category/category.module';
 import { FavoriteModule } from './favorite/favorite.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { BookModule } from './book/book.module';
 
 @Module({
   imports: [
@@ -23,6 +25,13 @@ import { FavoriteModule } from './favorite/favorite.module';
       synchronize: true,
       ssl: false,
       // logging: true, // opcional para ver más detalle
+    }),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // **Ruta ABSOLUTA a la carpeta local**
+      serveRoot: '/uploads/',                     // **Prefijo de URL para acceder a los archivos**
+      // Por ejemplo, un archivo en la ruta local 'uploads/imagen.jpg' 
+      // será accesible en la URL: http://localhost:3000/uploads/imagen.jpg
     }),
 
     AuthModule,

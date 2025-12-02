@@ -60,10 +60,12 @@ export class AuthService {
     const {password, email} = loginUserDto;
 
     // en la consulta solo retorna email y password
-    const user = await this.userRepository.findOne({
+    const user : (User | null)  = await this.userRepository.findOne({
       where: { email },
       select: { email: true, password: true, id: true}
     });
+
+    console.log(user);
 
     if ( !user ) 
       throw new UnauthorizedException('Credentials are not valid (email)');

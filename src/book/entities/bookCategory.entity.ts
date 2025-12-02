@@ -11,10 +11,10 @@ import { Category } from 'src/category/entities/category.entity';
 @Entity({ name: 'book_categorys' })
 export class BookCategory {
   @PrimaryColumn({ name: 'book_id', type: 'uuid'})
-  libroId: number;
+  libroId: string;
 
   @PrimaryColumn({ name: 'category_id', type: 'uuid' })
-  categoryId: number;
+  categoryId: string;
 
   /* Relacion entre libro y categoria */
   @ManyToOne(() => Book, (book) => book.BookCategory, {

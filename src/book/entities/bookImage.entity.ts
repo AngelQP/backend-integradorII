@@ -6,7 +6,7 @@ import { Book } from "./book.entity";
 export class BookImage {
 
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column('text')
     url: string;

@@ -1,4 +1,4 @@
-import { BookCategory } from 'src/libro/entities';
+import { BookCategory } from 'src/book/entities';
 import {
   Entity,
   PrimaryGeneratedColumn,

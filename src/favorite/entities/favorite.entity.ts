@@ -1,5 +1,5 @@
 import { User } from "src/auth/entities/user.entity";
-import { Book } from "src/libro/entities";
+import { Book } from "src/book/entities";
 import { CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 
 

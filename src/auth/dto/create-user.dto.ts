@@ -1,4 +1,5 @@
-import { IsEmail, IsNumberString, IsString, Length, Matches, MaxLength, MinLength } from "class-validator";
+import { IsArray, IsEmail, IsIn, IsNumberString, IsOptional, IsString, Length, Matches, MaxLength, MinLength } from "class-validator";
+import { ValidRoles } from "../interfaces";
 
 
 export class CreateUserDto {
@@ -27,5 +28,16 @@ export class CreateUserDto {
     @IsNumberString({}, { message: 'El teléfono debe contener solo números' })
     @Length(9, 9, { message: 'El teléfono debe tener exactamente 9 dígitos' })
     phone: string;
+
+    @IsArray()
+    @IsString({ each: true }) // Asegura que cada elemento dentro del array sea un string
+    @IsIn(['user','user-seller'], { each: true }) // Asegura que cada string sea un rol válido
+    @IsOptional() // Permite que el campo no se envíe
+    roles: string[];
+
+    // Si la propiedad 'roles' no es enviada en la petición, la establecemos a ['user']
+    constructor() {
+        this.roles = [ValidRoles.user];
+    }
 
 }
