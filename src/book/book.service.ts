@@ -154,6 +154,54 @@ export class BookService {
     return { message: 'Libro eliminado lógicamente' };
   }
 
+  // book.service.ts
+  async findBooksWithDiscount(limit?: number) { 
+    // Define la base de la URL estática
+    const HOST_URL = 'http://localhost:3000'; // Define esto como variable de entorno
+
+      try {
+          const queryBuilder = this.bookRepository.createQueryBuilder('book')
+              
+              // 🔑 CORRECCIÓN: Usar leftJoinAndSelect para cargar la relación 'images'
+              // 'book.images' es el nombre de la propiedad en la entidad Book.
+              // 'image' es el alias que le das a la tabla BookImage en el query.
+              .leftJoinAndSelect('book.images', 'image') 
+              
+              // Asegura que el descuento fue asignado (solución anterior)
+              .where('book.discount IS NOT NULL') 
+              
+              // Condiciones de filtrado
+              .andWhere('book.discount > :discountValue', { discountValue: 0 }) 
+              .andWhere('book.isActive = :isActiveValue', { isActiveValue: true })
+              
+              // Ordenación
+              .orderBy('book.discount', 'DESC'); 
+
+          // Límite, si está presente
+          if (limit && limit > 0) { 
+              queryBuilder.limit(limit);
+          }
+              
+          const books = await queryBuilder.getMany();
+          // 🔑 CORRECCIÓN: Iterar y mapear la URL de la imagen
+          const mappedBooks = books.map(book => ({
+              ...book,
+              images: book.images?.map(image => {
+                  
+                  return {
+                      ...image,
+                      // Construye la URL completa
+                      url: `${HOST_URL}${image.url}` 
+                      // Resultado esperado: 'http://localhost:3000/uploads/books/c29c7397-b9c9-422e-b026-59b0cc16155c.jpg'
+                  };
+              })
+          }));
+
+          return mappedBooks; // Devuelve los libros mapeados
+      } catch (error) {
+          this.handleDBErrors(error); 
+      }
+  }
 
   /* Metodo agregado para validacion de error de duplicado */
 

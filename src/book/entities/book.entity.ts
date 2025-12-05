@@ -46,7 +46,7 @@ export class Book {
     stock: number;
 
     @Column('smallint',{
-        nullable: true
+        default: 0
     })
     discount?: number;
 

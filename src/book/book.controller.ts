@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFiles, ParseUUIDPipe, BadRequestException, Query } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -87,11 +87,27 @@ export class BookController {
     return this.bookService.findAll();
   }
 
+  @Get('/discounts')
+  findDiscounts(@Query('limit') limit?: string) {
+    // console.log(limit);
+    // Convertimos el string 'limit' a un número, o undefined si no existe o no es un número válido.
+    const numericLimit = limit ? parseInt(limit, 10) : undefined;
+
+    // Puedes añadir una validación simple si lo deseas
+    if (numericLimit !== undefined && (isNaN(numericLimit) || numericLimit <= 0)) {
+        throw new BadRequestException('El parámetro limit debe ser un número entero positivo.');
+    }
+
+    return this.bookService.findBooksWithDiscount(numericLimit);
+  }
+
   @Get(':param')
   @ApiResponse({ status: 200, description: 'Libro', type: BookResponseDto })
   findOne(@Param('param', ParseUUIDPipe) param: string) {
     return this.bookService.findOne(param);
   }
+
+ 
 
   // -------------------------
   // Actualizacion BOOK

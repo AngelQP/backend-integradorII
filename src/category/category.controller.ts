@@ -13,6 +13,11 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @Post('categories-create')
+  async seedCategories() {
+    return this.categoryService.seedBookCategories();
+  }
+
   @Get()
   findAll() {
     return this.categoryService.findAll();

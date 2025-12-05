@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, SetMetadata, ParseUUIDPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto } from './dto';
@@ -41,6 +41,12 @@ export class AuthController {
   @Post('login')
   create(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
+  }
+
+  @Patch('convert-to-seller/:param')
+  @Auth(ValidRoles.user)
+  convertToSeller(@Param('param',ParseUUIDPipe) param: string) {
+    return this.authService.addSellerRole(param);
   }
 
   @Get('private')

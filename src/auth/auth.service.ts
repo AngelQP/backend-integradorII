@@ -13,7 +13,7 @@ import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class AuthService {
-
+ 
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -62,7 +62,7 @@ export class AuthService {
     // en la consulta solo retorna email y password
     const user : (User | null)  = await this.userRepository.findOne({
       where: { email },
-      select: { email: true, password: true, id: true}
+      select: { email: true, password: true, id: true, roles:true, phone: true, name: true, lastName: true, createdAt: true}
     });
 
     console.log(user);
@@ -76,12 +76,26 @@ export class AuthService {
     
 
     return {
-      ...user,
+      user,
       token: this.getJwtToken({id: user.id})
     };
 
   }
 
+  async addSellerRole ( term: string ) {
+    
+    const user : (User | null) = await this.userRepository.findOneBy({ id: term });
+
+    if( !user ){
+      throw new BadRequestException('Usuario no encontrado');
+    }
+
+    if (!user.roles.includes('user-seller')) {
+      user.roles.push('user-seller');
+    }
+
+    return await this.userRepository.save(user);
+  }
 
   private getJwtToken( payload: JwtPayload ) {
 

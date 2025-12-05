@@ -103,6 +103,42 @@ export class CategoryService {
     await this.categoryRepository.save(removeCategory);
   }
 
+  async seedBookCategories() {
+    const categories = [
+      'NOVELA CONTEMPORÁNEA', 'NOVELA HISTÓRICA', 'CIENCIA FICCIÓN', 'FANTASÍA', 'TERROR',
+      'MISTERIO', 'THRILLER / SUSPENSO', 'ROMANCE', 'ROMANCE JUVENIL', 'FICCIÓN JUVENIL',
+      'AVENTURA', 'REALISMO MÁGICO', 'DISTOPÍA', 'UTOPÍA', 'FICCIÓN LITERARIA', 'FICCIÓN CLÁSICA',
+      'CUENTOS CORTOS', 'POESÍA', 'TEATRO / DRAMATURGIA', 'ENSAYO', 'FILOSOFÍA', 'PSICOLOGÍA',
+      'AUTOAYUDA', 'DESARROLLO PERSONAL', 'NEGOCIOS', 'EMPRENDIMIENTO', 'LIDERAZGO', 'ECONOMÍA',
+      'HISTORIA', 'BIOGRAFÍAS', 'MEMORIAS', 'CIENCIA', 'DIVULGACIÓN CIENTÍFICA', 'TECNOLOGÍA',
+      'INTELIGENCIA ARTIFICIAL', 'EDUCACIÓN', 'PEDAGOGÍA', 'SALUD', 'MEDICINA', 'NUTRICIÓN',
+      'ESPIRITUALIDAD', 'RELIGIÓN', 'MITOLOGÍA', 'VIAJES', 'ARTE', 'FOTOGRAFÍA', 'ARQUITECTURA',
+      'COCINA / GASTRONOMÍA', 'DERECHO', 'POLÍTICA'
+    ];
+
+    try {
+      const insertedCategories: Category[] = [];
+
+      for (const name of categories) {
+        const exists = await this.categoryRepository.findOne({ where: { name } });
+
+        if (!exists) {
+          const category = this.categoryRepository.create({ name });
+          const saved = await this.categoryRepository.save(category);
+          insertedCategories.push(saved);
+        }
+      }
+
+      return plainToInstance(CategoryResponse, insertedCategories, {
+        excludeExtraneousValues: true,
+      });
+
+    } catch (error) {
+      this.logger.error(error);
+      throw new InternalServerErrorException('Error al ejecutar el seed de categorías');
+    }
+  }
+
   // Funcion para retornar un error en especifico de duplicado
   handleDBExceptions(error: any) {
 
